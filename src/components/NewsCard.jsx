@@ -1,7 +1,13 @@
+import { useState } from "react";
 import { FaEye, FaStar, FaShareAlt, FaRegBookmark } from "react-icons/fa";
 
 const NewsCard = ({ news }) => {
   const { title, author, thumbnail_url, details, rating, total_view } = news;
+
+  const [showFull, setShowFull] = useState(false)
+  const handleReadMore = () => {
+    setShowFull(!showFull);
+  }
 
   const formattedDate = new Date(
     news.author.published_date
@@ -48,13 +54,20 @@ const NewsCard = ({ news }) => {
       <div className="px-4  text-accent">
         {details.length > 200 ? (
           <>
-            {details.slice(0, 200)}...
-            <span className="text-primary font-semibold cursor-pointer hover:underline">
-              Read More
-            </span>
+            {showFull ? (
+              <>
+                {details}
+                <span onClick={handleReadMore} className='cursor-pointer font-bold text-primary'>{" "}Show less</span>
+              </>
+            ) : (
+              <>
+                {details.slice(0, 200)}...
+                <span onClick={handleReadMore} className='cursor-pointer font-bold text-primary'>{" "}Read More</span>
+              </>
+            )}
           </>
         ) : (
-          details
+          { details }
         )}
       </div>
 
